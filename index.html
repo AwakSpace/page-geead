@@ -314,8 +314,8 @@
                     </article>
                 </section>
 
-                <button class="w3-button w3-hover-blue w3-hover-text-white w3-text-black w3-white w3-round-xxlarge w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
-                <button class="w3-button w3-hover-blue w3-hover-text-white w3-text-black w3-white w3-round-xxlarge w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+                <button class="w3-button w3-hover-blue w3-hover-text-white w3-text-black w3-white w3-round-xxlarge w3-display-left" onclick="carrossel.slideBefore()">&#10094;</button>
+                <button class="w3-button w3-hover-blue w3-hover-text-white w3-text-black w3-white w3-round-xxlarge w3-display-right" onclick="carrossel.nextSlide()">&#10095;</button>
             </div>
         </section>
 
@@ -401,21 +401,35 @@
     <script src="https://kit.fontawesome.com/a20fa10d0b.js" crossorigin="anonymous"></script>
 
     <script>
-        let slideIndex = 1;
-        showDivs(slideIndex);
+        const carrossel = createCarrossel()
 
-        function plusDivs(n) {
-            showDivs(slideIndex += n);
-        }
+        function createCarrossel() {
+            let slideIndex = 0;
+            let slideImagens = document.querySelectorAll('.slide')
 
-        function showDivs(n) {
-            let x = document.getElementsByClassName('slide');
-            if( n > x.length ) { slideIndex = 1 }
-            if( n < 1 ) { slideIndex = x.length }
-            for ( let i = 0; i < x.length; i++){
-                x[i].style.display = "none";
+            showSlide()
+
+            function nextSlide() {
+                slideIndex++;
+                if( slideIndex > slideImagens.length - 1) { slideIndex = 0 }
+                showSlide()
             }
-            x[slideIndex - 1].style.display = "flex";
+
+            function slideBefore() {
+                slideIndex--;
+                if( slideIndex < 1 ) { slideIndex = slideImagens.length - 1 }
+                showSlide()
+            }
+
+            function showSlide() {
+                slideImagens.forEach(imagem => imagem.style.display = "none")
+                slideImagens[slideIndex].style.display = "flex"
+            }
+
+            return {
+                nextSlide,
+                slideBefore
+            }
         }
     </script>
 </body>
